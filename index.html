@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CDMX Boutique Hotels Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 100vh; width: 100%; }
+
+        /* This styles the permanent hotel name labels */
+        .label-marker {
+            font-size: 14px;
+            font-weight: bold;
+            color: black;
+            background: none !important;
+            border: none !important;
+            padding: 0;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <h3 style="text-align:center;">Top Boutique Hotels – Condesa & Roma, Mexico City</h3>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([19.4136, -99.1698], 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const hotels = [
+            {
+                name: "FlowSuites Condesa",
+                coords: [19.4117, -99.1740],
+                price: "$116–$172",
+                nearby: "Parque México, Condesa nightlife",
+                vibe: "Modern, minimalist",
+                features: "Rooftop terrace, spa services, free breakfast"
+            },
+            {
+                name: "Nima Local House Hotel & Spa",
+                coords: [19.4171, -99.1588],
+                price: "$399–$547",
+                nearby: "Paseo de la Reforma, El Ángel",
+                vibe: "Elegant, tranquil",
+                features: "Spa, gourmet breakfast, sun terrace"
+            },
+            {
+                name: "Ignacia Guest House",
+                coords: [19.4174, -99.1577],
+                price: "$280–$367",
+                nearby: "Centro Histórico, Anthropology Museum",
+                vibe: "Artistic, cozy",
+                features: "Daily breakfast, mezcal tastings"
+            },
+            {
+                name: "Octavia Casa",
+                coords: [19.4084, -99.1714],
+                price: "$159–$277",
+                nearby: "Chapultepec Castle",
+                vibe: "Chic, minimalist",
+                features: "Garden, terrace"
+            },
+            {
+                name: "Colima 71 Art Community Hotel",
+                coords: [19.4177, -99.1599],
+                price: "$190–$227",
+                nearby: "Bellas Artes, Chapultepec Park",
+                vibe: "Artistic, contemporary",
+                features: "Kitchenettes, balconies"
+            },
+            {
+                name: "Casa 9 Hotel",
+                coords: [19.4092, -99.1717],
+                price: "$150–$200",
+                nearby: "Parque España, Condesa",
+                vibe: "Intimate, design-forward",
+                features: "Garden terrace, artisanal décor"
+            },
+            {
+                name: "Hotel Maria Condesa",
+                coords: [19.4110, -99.1743],
+                price: "$130–$180",
+                nearby: "Parque México",
+                vibe: "Stylish, adults-only",
+                features: "Mezcal bar, bikes"
+            },
+            {
+                name: "Casa Club Condesa",
+                coords: [19.4100, -99.1725],
+                price: "$180–$220",
+                nearby: "Parque España",
+                vibe: "Luxurious, peaceful",
+                features: "Wellness packages"
+            },
+            {
+                name: "Andaz Mexico City Condesa",
+                coords: [19.4113, -99.1748],
+                price: "$200–$250",
+                nearby: "Chapultepec Park",
+                vibe: "Vibrant, modern",
+                features: "Rooftop pool"
+            },
+            {
+                name: "Hotel San Fernando",
+                coords: [19.4107, -99.1729],
+                price: "$170–$210",
+                nearby: "Local cafés and markets",
+                vibe: "Concierge-focused",
+                features: "Terrace, non-smoking"
+            },
+            {
+                name: "Casa Luciana Condesa",
+                coords: [19.4095, -99.1730],
+                price: "$220–$300",
+                nearby: "Chapultepec Castle",
+                vibe: "Elegant, wellness-focused",
+                features: "Sun terrace, 24h front desk"
+            },
+            {
+                name: "Hotel Casa Cuenca",
+                coords: [19.4150, -99.1610],
+                price: "$150–$190",
+                nearby: "Angel of Independence",
+                vibe: "Cozy, modern",
+                features: "Free WiFi, garden"
+            },
+            {
+                name: "Condesa DF",
+                coords: [19.4130, -99.1710],
+                price: "$180–$230",
+                nearby: "Parque España",
+                vibe: "Trendy, artistic",
+                features: "Rooftop café, cinema"
+            },
+            {
+                name: "Casona Roma Norte",
+                coords: [19.4170, -99.1600],
+                price: "$200–$260",
+                nearby: "Chapultepec Castle",
+                vibe: "Stylish, modern",
+                features: "Fitness, spa, garden"
+            },
+            {
+                name: "Casa Decu",
+                coords: [19.4120, -99.1700],
+                price: "$140–$180",
+                nearby: "Chapultepec Castle",
+                vibe: "Contemporary, comfortable",
+                features: "Free bikes, terrace"
+            },
+            {
+                name: "Hotel Brick",
+                coords: [19.4162, -99.1594],
+                price: "$250–$300",
+                nearby: "Roma district, Orizaba St.",
+                vibe: "Stylish, upscale",
+                features: "Gym, dining, swim lane"
+            }
+        ];
+
+        hotels.forEach(hotel => {
+            const marker = L.marker(hotel.coords).addTo(map);
+
+            // Permanent hotel name (unstyled text)
+            const label = L.divIcon({
+                className: 'label-marker',
+                html: hotel.name
+            });
+            L.marker(hotel.coords, { icon: label }).addTo(map);
+
+            // Tooltip with detailed info
+            const tooltip = `
+                💲 <b>Price:</b> ${hotel.price}<br/>
+                📍 <b>Nearby:</b> ${hotel.nearby}<br/>
+                🌟 <b>Vibe:</b> ${hotel.vibe}<br/>
+                🛎️ <b>Features:</b> ${hotel.features}
+            `;
+            marker.bindTooltip(tooltip);
+        });
+    </script>
+</body>
+</html>
